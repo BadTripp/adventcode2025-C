@@ -2,7 +2,37 @@
 #include<string.h>
 char* fileName = "input.txt"; 
 long long int idSum = 0;
-bool checkid (long long int  id){			
+bool checkArray (int v[],int len){
+	for(int i=0;i<len;i++)
+		for(int j = i + 1;j < len; j++)
+			if(v[i]==v[j]) return true;
+	return false;
+}
+bool  checkid_2(int len,long long id){
+	long int t = 1;
+	int c = 1;
+	long long idCopy = id;
+	while (c < len){	
+		long int t = 1;
+		int val[len/c];
+		if(len%c == 0){	
+			for(int l = c ;l > 0;l--){
+				t *= 10;			
+				//printf("Valore id%d\n",t);
+			}	
+			for(int i = idCopy , j = 0; i > 0;i/=t,j++){
+				
+				printf("Valore id%d\n",i);	
+				val[j] = i%t;	
+			}
+		}
+		c++;
+		//printf("%d\n",checkArray(val,len));	
+		return checkArray(val,len);
+	}
+
+}
+void  checkid (long long int  id){			
 	long int t = 1;
 	int len = 0;
 	long long int num = id;
@@ -18,6 +48,7 @@ bool checkid (long long int  id){
 		}
 		int high = id / t;
 		int low  = id % t;
+		if(checkid_2(len,id)) idSum = idSum + id;
 		//printf("%d %d\n",high,low);
 		if(high == low){
 			
@@ -40,6 +71,7 @@ int main (){
 		finder(start,end);
 	}
 	printf("%d",idSum);
+	
 	return 1;
 }
 
