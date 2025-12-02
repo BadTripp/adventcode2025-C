@@ -8,7 +8,7 @@ bool checkArray (int v[],int len){
 			if(v[i]==v[j]) return true;
 	return false;
 }
-bool  checkid_2(int len,long long id){
+void  checkid_2(int len,long long id){
 	long int t = 1;
 	int c = 1;
 	long long idCopy = id;
@@ -22,13 +22,17 @@ bool  checkid_2(int len,long long id){
 			}	
 			for(int i = idCopy , j = 0; i > 0;i/=t,j++){
 				
-				printf("Valore id%d\n",i);	
+				//printf("Valore id%d\n",i);	
 				val[j] = i%t;	
 			}
 		}
 		c++;
 		//printf("%d\n",checkArray(val,len));	
-		return checkArray(val,len);
+		if(checkArray(val,len/c)){
+			idSum = idSum + id;
+			break;
+		}
+					
 	}
 
 }
@@ -48,14 +52,17 @@ void  checkid (long long int  id){
 		}
 		int high = id / t;
 		int low  = id % t;
-		if(checkid_2(len,id)) idSum = idSum + id;
+		
 		//printf("%d %d\n",high,low);
 		if(high == low){
 			
 			idSum=idSum+id;
 			printf("Trovato %lld Somma totale : %lld\n",id,idSum);
 		}
+			
+		
 	}	
+	checkid_2(len,id);
 }
 void finder(long long int  start,long long int end){
 	for(long long int  i = start ; i <= end ;i++){
@@ -70,7 +77,7 @@ int main (){
 	//	printf("%lld-%lld\n",start,end);
 		finder(start,end);
 	}
-	printf("%d",idSum);
+	
 	
 	return 1;
 }
