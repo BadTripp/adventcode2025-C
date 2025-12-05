@@ -7,6 +7,61 @@ typedef struct {
 	long long int primo;
 	long long int secondo;
 } Coppia;
+void sommaStringToString(unsigned long long number){
+    char str[256];
+    sprintf(str, "%llu", number);
+
+    int lenSum = strlen(sumRange) - 1;
+    int lenStr = strlen(str) - 1;
+    int resto = 0;
+    int c = 0;
+    
+    char sum[256];
+    while(lenSum >= 0 || lenStr >= 0 || resto > 0){
+        //printf("Dentro");
+        int n1,n2;
+        if(lenSum >= 0){
+            n1 = sumRange[lenSum] - '0';
+            
+        }else{
+            n1 = 0;
+        }
+        if(lenStr >= 0){
+            n2 = str[lenStr] - '0';
+            
+        }else{
+            n2 = 0;
+        }
+        
+        
+        int x = n1 + n2 + resto;
+        
+        sum[c] = x % 10 + '0';
+        
+        resto =  x / 10;
+        //printf("%d %d %d", n1 , n2 , x);
+        c++;
+        lenSum--;
+        lenStr--;
+       
+        
+    }
+    
+    while (c > 1 && sum[c - 1] == '0') {
+        c--;
+    }
+    
+    //printf("%s\n",sum);
+    for(int i = 0; i < c; i++){
+        sumRange[i] = sum[c - i - 1];
+    }
+    sumRange[c] = '\0';
+
+    //if(sumRange[0] == '0'){
+    //	memmove(sumRange, sumRange + 1, strlen(sumRange + 1) + 1);
+    //}
+    printf("%s\n",sumRange);
+}
 int sumRangeString(){
 	int len = strlen(sumRange)-1;	
 	while(len >= 0){
@@ -74,30 +129,17 @@ int  optimize (Coppia *range,int dim){
 }
 void countRange(Coppia *range,int dim){
 	for(int i = 0; i < dim;i++){
-		for(long long j = range[i].primo; j <= range[i].secondo;j++){
-			//printf("%s\n",sumRange);	
-			int check = 0;
-			for(long long k = i-1 ; k >= 0 ; k--){
-				// se presente nei range  precedenti
-				if(j >= range[k].primo && j <= range[k].secondo){
-					check = 1;	
-					printf("%lld \n",j);
-				}	
-
-			}	
-			if(check == 0){
-				//printf("\033[H\033[J");
-				//printf("totale range %d\n",dim);
-				//printf("range %d\n",i);
-				//printf("%s\n",sumRange);
-			  	sumRangeString();
-			}
+		//for(long long j = range[i].primo; j <= range[i].secondo;j++){
+			printf("Riga%d\n",i);	
+			// sei lento
+			//sumRangeString();
+			sommaStringToString(range[i].secondo - range[i].primo + 1);
 			
 				
 			
 				
 			//printf("contatore%d\n",j);		
-			}
+			//}
 	}
 }
 int checkId(long long int ingr,Coppia *range,int dim){
