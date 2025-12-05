@@ -29,7 +29,49 @@ int sumRangeString(){
 		len--;
 	}
 }
+void order (Coppia *range,long long int *a,long long int *b,int dim){
+	for(int i = 0; i < dim ; i++){
+		if(*a < range[i].primo){
+			long long int x;
+			//nuovo range prende posizine 
+			x = *a;
+			*a = range[i].primo;
+			range[i].primo = x;
 
+			x = *b;	
+			*b = range[i].secondo;
+			range[i].secondo = x;
+			
+		}
+
+	}
+}
+long long max (long long a,long long b,int i){
+	if(a>b){
+		return i;
+	}else{
+		return i-1;
+	}
+	
+}
+int  optimize (Coppia *range,int dim){
+	int newdim = dim;
+	if(dim > 0){
+	for(int i = 1; i < newdim ;){
+		if(i - 1 >= 0 ){
+			if(range[i].primo <= range[i-1].secondo){
+				range[i-1].secondo = range[max(range[i].secondo,range[i-1].secondo,i)].secondo;
+				memmove(&range[i],&range[i+1],(newdim-i-1) * sizeof(range[0]));	
+				newdim--;
+			
+			}else{
+				i++;		
+			}
+		}	
+	}
+	}
+	return newdim;
+}
 void countRange(Coppia *range,int dim){
 	for(int i = 0; i < dim;i++){
 		for(long long j = range[i].primo; j <= range[i].secondo;j++){
@@ -44,10 +86,10 @@ void countRange(Coppia *range,int dim){
 
 			}	
 			if(check == 0){
-				printf("\033[H\033[J");
-				printf("totale range %d\n",dim);
-				printf("range %d\n",i);
-				printf("%s\n",sumRange);
+				//printf("\033[H\033[J");
+				//printf("totale range %d\n",dim);
+				//printf("range %d\n",i);
+				//printf("%s\n",sumRange);
 			  	sumRangeString();
 			}
 			
@@ -90,6 +132,7 @@ int  main (void){
 			long long  int n1,n2;
 					
 			sscanf(line,"%lld-%lld",&n1,&n2);
+			order(range,&n1,&n2,lc);	
 			Coppia *tmp = realloc(range,(lc + 1) * sizeof(Coppia));
 			if(tmp == NULL){
 				printf("Coppia non basta piu!");	
@@ -111,8 +154,9 @@ int  main (void){
 			}
 						
 	}
+	lc = optimize(range,lc);
 	for(int i = 0; i < lc;i++){
-		//printf("Range : %lld,%lld\n",range[i].primo,range[i].secondo);
+		printf("Range : %lld,%lld\n",range[i].primo,range[i].secondo);
 		}
 	countRange(range,lc);
 	printf("sum : %d  sumRange : %s \n",sum,sumRange);
